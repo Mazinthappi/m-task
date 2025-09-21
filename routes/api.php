@@ -10,10 +10,15 @@ use Illuminate\Support\Facades\Route;
 
 
 
-//  login routes
+
 
 // admin data (registration) seeded in userseeder
+
+
+//user registratio
 Route::Post('register', [AuthController::class, 'register']);
+
+//user and admin login
 Route::post('login', [AuthController::class, 'login']);
 
 
@@ -21,7 +26,7 @@ Route::post('login', [AuthController::class, 'login']);
 
 
 
-// 🔹 Admin protected routes
+// 🔹 Admin  routes
 Route::middleware(['auth:api', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
         return response()->json(['msg' => 'Welcome Admin dashborad']);
@@ -36,7 +41,7 @@ Route::middleware(['auth:api', 'admin'])->prefix('admin')->group(function () {
     
 });
 
-// 🔹 User protected routes
+// 🔹 User  routes
 Route::middleware(['auth:api', 'user'])->prefix('user')->group(function () {
     Route::get('/profile', [AuthController::class, 'profile']);
     Route::get('index', [AuthController::class, 'index']);
