@@ -73,7 +73,7 @@ class CourseController extends Controller
     {
         $userId = Auth::id();
 
-        $courses = Course::withCount('users') 
+        $courses = Course::withCount('users')
             ->get()
             ->map(function ($course) use ($userId) {
                 return [
@@ -89,5 +89,19 @@ class CourseController extends Controller
             'status' => true,
             'data' => $courses
         ]);
+    }
+    public function searchCourse(Request $request)
+    {
+        try {
+            $searchKey = $request->key;
+            if ($searchKey) {
+                $data = course::where('title', 'LIKE', "%{$searchKey}%")->get();
+                return response()->json(['status' => true, 'message' => 'data fetched succesfully', 'data' => $data]);
+            } else {
+                return response()->json(['status' => false, 'message' => 'no data found']);
+            }
+        } catch (Exception $e) {
+            return response()->json(['status'  => false, 'message' => $e->getMessage(),], 400);
+        }
     }
 }
